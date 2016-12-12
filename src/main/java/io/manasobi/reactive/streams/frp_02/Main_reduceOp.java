@@ -46,12 +46,12 @@ public class Main_reduceOp {
 
     public static <T> Publisher<T> mapOp(Publisher<T> pub, Function<T, T> func) {
         return subscriber ->
-                pub.subscribe(new SubscriberAdapter<T>(subscriber) {
-                    @Override
-                    public void onNext(T t) {
-                        subscriber.onNext(func.apply(t));
-                    }
-                });
+            pub.subscribe(new SubscriberAdapter<T>(subscriber) {
+                @Override
+                public void onNext(T t) {
+                    subscriber.onNext(func.apply(t));
+                }
+            });
     }
 
     public static <T> Publisher reduceOp(Publisher<T> pub, T init, BiFunction<T, T, T> func) {

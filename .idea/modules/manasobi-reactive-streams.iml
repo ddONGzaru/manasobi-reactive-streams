@@ -50,5 +50,6 @@
     <orderEntry type="library" scope="TEST" name="Gradle: net.minidev:accessors-smart:1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm:5.0.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.projectlombok:lombok:1.16.10" level="project" />
+    <orderEntry type="library" name="Gradle: io.projectreactor:reactor-core:3.0.3.RELEASE" level="project" />
   </component>
 </module>
