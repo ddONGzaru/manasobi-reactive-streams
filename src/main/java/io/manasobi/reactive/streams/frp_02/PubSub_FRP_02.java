@@ -24,16 +24,16 @@ public class PubSub_FRP_02 {
 
         Iterable<Integer> intIter = Stream.iterate(1, i -> i + 1).limit(10).collect(toList());
 
-        Publisher<Integer> pub = sub -> sub.onSubscribe(
+        Publisher<Integer> pub = subscriber -> subscriber.onSubscribe(
             new Subscription() {
                 @Override
                 public void request(long n) {
                     try {
-                        intIter.forEach(s -> sub.onNext(s));
-                        sub.onComplete();
+                        intIter.forEach(s -> subscriber.onNext(s));
+                        subscriber.onComplete();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        sub.onError(e);
+                        subscriber.onError(e);
                     }
                 }
 
