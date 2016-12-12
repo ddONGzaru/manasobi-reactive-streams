@@ -21,23 +21,62 @@ public class IntervalEx {
             sub.onSubscribe(new Subscription() {
 
                 int no = 0;
+                boolean cancelled = false;
 
                 @Override
                 public void request(long n) {
                     ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
                     es.scheduleAtFixedRate(() -> {
-                        sub.onNext(no++);
+                        if (cancelled) {
+                            es.shutdown();
+                            return;
+                        }
+                        sub.onNext(++no);
                     }, 0, 500, TimeUnit.MILLISECONDS);
                 }
 
                 @Override
                 public void cancel() {
-
+                    cancelled = true;
                 }
             });
         };
 
-        pub.subscribe(new Subscriber<Integer>() {
+        Publisher<Integer> takeOp = sub -> {
+            pub.subscribe(new Subscriber<Integer>() {
+
+                private int count = 1;
+                Subscription subscription;
+
+                @Override
+                public void onSubscribe(Subscription s) {
+                    sub.onSubscribe(s);
+                    this.subscription = s;
+                }
+
+                @Override
+                public void onNext(Integer integer) {
+
+                    if (count++ >= 9) {
+                        subscription.cancel();
+                    }
+
+                    sub.onNext(integer);
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    sub.onError(t);
+                }
+
+                @Override
+                public void onComplete() {
+                    sub.onComplete();
+                }
+            });
+        };
+
+        takeOp.subscribe(new Subscriber<Integer>() {
             @Override
             public void onSubscribe(Subscription s) {
                 log.debug("onSubscribe");
