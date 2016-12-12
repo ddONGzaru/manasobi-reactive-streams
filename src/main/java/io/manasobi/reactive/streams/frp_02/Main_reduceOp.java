@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -28,14 +29,14 @@ import static java.util.stream.Collectors.*;
 
 */
 @Slf4j
-public class Main_sumOp {
+public class Main_reduceOp {
 
     public static void main(String[] args) {
 
         Publisher<Integer> pub = iterPub(Stream.iterate(1, i -> i + 1).limit(10).collect(toList()));
         Publisher<Integer> mapOp = mapOp(pub, e -> e * 10);
-        Publisher<Integer> sumOp = sumOp(mapOp);
-        sumOp.subscribe(logSub());
+        Publisher<Integer> reduceOp = reduceOp(mapOp, 0, (a, b) -> a + b);
+        reduceOp.subscribe(logSub());
 
     }
 
@@ -53,19 +54,20 @@ public class Main_sumOp {
                 });
     }
 
-    public static Publisher<Integer> sumOp(Publisher<Integer> pub) {
+    public static <T> Publisher reduceOp(Publisher<T> pub, T init, BiFunction<T, T, T> func) {
         return subscriber ->
-            pub.subscribe(new SubscriberAdapter<Integer>(subscriber) {
-                int sum = 0;
+            pub.subscribe(new SubscriberAdapter<T>(subscriber) {
+
+                T result = init;
 
                 @Override
-                public void onNext(Integer i) {
-                    sum += i;
+                public void onNext(T t) {
+                    result = func.apply(result, t);
                 }
 
                 @Override
                 public void onComplete() {
-                    subscriber.onNext(sum);
+                    subscriber.onNext(result);
                     subscriber.onComplete();
                 }
             });

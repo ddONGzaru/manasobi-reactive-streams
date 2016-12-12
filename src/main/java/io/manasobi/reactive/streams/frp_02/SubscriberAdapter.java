@@ -6,11 +6,11 @@ import org.reactivestreams.Subscription;
 /**
  * Created by tw.jang on 2016-12-12.
  */
-public class SubscriberAdapter implements Subscriber<Integer> {
+public class SubscriberAdapter<T> implements Subscriber<T> {
 
     private Subscriber sub;
 
-    public SubscriberAdapter(Subscriber<? super Integer> sub) {
+    public SubscriberAdapter(Subscriber sub) {
         this.sub = sub;
     }
 
@@ -20,8 +20,8 @@ public class SubscriberAdapter implements Subscriber<Integer> {
     }
 
     @Override
-    public void onNext(Integer i) {
-        sub.onNext(i);
+    public void onNext(T t) {
+        sub.onNext(t);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class Main_mapOp {
 
     public static Publisher<Integer> mapOp(Publisher<Integer> pub, Function<Integer, Integer> func) {
         return subscriber ->
-            pub.subscribe(new SubscriberAdapter(subscriber) {
+            pub.subscribe(new SubscriberAdapter<Integer>(subscriber) {
                 @Override
                 public void onNext(Integer i) {
                     subscriber.onNext(func.apply(i));
