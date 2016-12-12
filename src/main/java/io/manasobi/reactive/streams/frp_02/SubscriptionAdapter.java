@@ -6,13 +6,13 @@ import org.reactivestreams.Subscription;
 /**
  * Created by tw.jang on 2016-12-12.
  */
-public class SubscriptionAdapter implements Subscription {
+public class SubscriptionAdapter<T> implements Subscription {
 
-    private Iterable<Integer> iter;
+    private Iterable iter;
 
     private Subscriber subscriber;
 
-    public SubscriptionAdapter(Iterable<Integer> iter, Subscriber<? super Integer> subscriber) {
+    public SubscriptionAdapter(Iterable<T> iter, Subscriber<T> subscriber) {
         this.iter = iter;
         this.subscriber = subscriber;
     }

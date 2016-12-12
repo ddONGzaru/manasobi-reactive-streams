@@ -8,7 +8,7 @@ import org.reactivestreams.Subscription;
  * Created by tw.jang on 2016-12-12.
  */
 @Slf4j
-public class LogSubAdapter implements Subscriber<Integer> {
+public class LogSubAdapter<T> implements Subscriber<T> {
 
     @Override
     public void onSubscribe(Subscription s) {
@@ -17,8 +17,8 @@ public class LogSubAdapter implements Subscriber<Integer> {
     }
 
     @Override
-    public void onNext(Integer i) {
-        log.info("Subscriber.onNext :: {}", i);
+    public void onNext(T t) {
+        log.info("Subscriber.onNext :: {}", t);
     }
 
     @Override

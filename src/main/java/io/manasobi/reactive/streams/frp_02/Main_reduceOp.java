@@ -40,16 +40,16 @@ public class Main_reduceOp {
 
     }
 
-    public static Publisher<Integer> iterPub(Iterable<Integer> iter) {
+    public static <T> Publisher<T> iterPub(Iterable<T> iter) {
         return subscriber -> subscriber.onSubscribe(new SubscriptionAdapter(iter, subscriber));
     }
 
-    public static Publisher<Integer> mapOp(Publisher<Integer> pub, Function<Integer, Integer> func) {
+    public static <T> Publisher<T> mapOp(Publisher<T> pub, Function<T, T> func) {
         return subscriber ->
-                pub.subscribe(new SubscriberAdapter<Integer>(subscriber) {
+                pub.subscribe(new SubscriberAdapter<T>(subscriber) {
                     @Override
-                    public void onNext(Integer i) {
-                        subscriber.onNext(func.apply(i));
+                    public void onNext(T t) {
+                        subscriber.onNext(func.apply(t));
                     }
                 });
     }
