@@ -33,7 +33,7 @@ public class ReactorEx {
             e.complete();
         })
         .log("  pub :: ")
-        .buffer()
+        .buffer(2)
         .subscribe(s -> {
             s.stream().forEach(System.out::println);
             if (s instanceof Collection) System.out.println("T"); else System.out.println("F");

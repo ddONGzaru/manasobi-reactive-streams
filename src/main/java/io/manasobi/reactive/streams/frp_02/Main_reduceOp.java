@@ -35,7 +35,7 @@ public class Main_reduceOp {
 
         Publisher<Integer> pub = iterPub(Stream.iterate(1, i -> i + 1).limit(10).collect(toList()));
         Publisher<Integer> mapOp = mapOp(pub, e -> e * 10);
-        Publisher<Integer> reduceOp = reduceOp(mapOp, 0, (a, b) -> a + b);
+        Publisher<Integer> reduceOp = reduceOp(mapOp, 0, Integer::sum);
         reduceOp.subscribe(logSub());
 
     }
